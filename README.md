@@ -4,6 +4,4 @@ Actually Faster is a mod that makes the printer, scrapper, chance shrine and cau
 
 Now v1.0.5 with (faster) cauldrons!
 
-<iframe width="420" height="315"
-src="https://www.youtube.com/embed/vuJa0uxHccQ">
-</iframe> 
+For a short Showcase click [here](https://youtu.be/vuJa0uxHccQ).
