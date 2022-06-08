@@ -36,7 +36,7 @@ namespace ActuallyFaster
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Felda";
         public const string PluginName = "ActuallyFaster";
-        public const string PluginVersion = "1.0.5";
+        public const string PluginVersion = "1.0.6";
         public static ConfigEntry<bool> scrapper { get; set; }
         public static ConfigEntry<bool> printer { get; set; }
         public static ConfigEntry<bool> chanceShrine { get; set; }
@@ -66,7 +66,7 @@ namespace ActuallyFaster
                 On.RoR2.Stage.Start += delegate (On.RoR2.Stage.orig_Start orig, Stage self)
                 {
                     typeof(Duplicating).SetFieldValue("initialDelayDuration", 0.1f);
-                    typeof(Duplicating).SetFieldValue("timeBetweenStartAndDropDroplet", 0.1f);
+                    typeof(Duplicating).SetFieldValue("timeBetweenStartAndDropDroplet", 0.0f);
                     orig(self);
                 };
                 On.EntityStates.Duplicator.Duplicating.DropDroplet += (orig, self) =>
@@ -80,12 +80,14 @@ namespace ActuallyFaster
                 On.RoR2.PurchaseInteraction.OnInteractionBegin += (orig, self, activator) =>
                 {
                     orig(self, activator);
-                    if (chanceShrine.Value && self.isShrine)
+                    if (chanceShrine.Value)
                     {
                         ShrineChanceBehavior behavior = self.GetComponent<ShrineChanceBehavior>();
-                        behavior.refreshTimer = 0f;
+                        if(behavior != null)
+                        {
+                            behavior.refreshTimer = 0.1f;
+                        }
                     }
-                    
     
                     if ((self.costType == CostTypeIndex.WhiteItem || self.costType == CostTypeIndex.GreenItem || self.costType == CostTypeIndex.RedItem) && cauldron.Value && (self.Networkcost > 1) && !self.isShrine)
                     {
