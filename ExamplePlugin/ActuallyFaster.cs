@@ -36,7 +36,7 @@ namespace ActuallyFaster
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Felda";
         public const string PluginName = "ActuallyFaster";
-        public const string PluginVersion = "1.0.6";
+        public const string PluginVersion = "1.0.7";
         public static ConfigEntry<bool> scrapper { get; set; }
         public static ConfigEntry<bool> printer { get; set; }
         public static ConfigEntry<bool> chanceShrine { get; set; }
@@ -89,7 +89,7 @@ namespace ActuallyFaster
                         }
                     }
     
-                    if ((self.costType == CostTypeIndex.WhiteItem || self.costType == CostTypeIndex.GreenItem || self.costType == CostTypeIndex.RedItem) && cauldron.Value && (self.Networkcost > 1) && !self.isShrine)
+                    if ((self.costType == CostTypeIndex.WhiteItem || self.costType == CostTypeIndex.GreenItem || self.costType == CostTypeIndex.RedItem) && cauldron.Value && (self.Networkcost > 0) && !self.isShrine)
                     {
                         self.available = true;
                     }
