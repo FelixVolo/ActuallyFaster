@@ -9,4 +9,6 @@ Actually Faster is a mod that makes the printer, scrapper, chance shrine and cau
 
 - v1.0.7: fixed that the common cauldron on commencement is slow
 
+- v1.0.8: add faster cleansing pool and "faster" chests
+
 For a short Showcase click [here](https://youtu.be/vuJa0uxHccQ).

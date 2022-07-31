@@ -36,11 +36,13 @@ namespace ActuallyFaster
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Felda";
         public const string PluginName = "ActuallyFaster";
-        public const string PluginVersion = "1.0.7";
+        public const string PluginVersion = "1.0.8";
         public static ConfigEntry<bool> scrapper { get; set; }
         public static ConfigEntry<bool> printer { get; set; }
         public static ConfigEntry<bool> chanceShrine { get; set; }
         public static ConfigEntry<bool> cauldron { get; set; }
+        public static ConfigEntry<bool> cleansingPool { get; set; }
+        public static ConfigEntry<bool> chestDrop { get; set; }
 
         //We need our item definition to persist through our functions, and therefore make it a class field.
 
@@ -51,6 +53,8 @@ namespace ActuallyFaster
             printer = base.Config.Bind<bool>("Actually Faster", "Printer brrrrrt", true, "Should the printer go brrrrrt?");
             chanceShrine = base.Config.Bind<bool>("Actually Faster", "Chance Shrine brrrrrt", true, "Should the chance shrine go brrrrrt?");
             cauldron = base.Config.Bind<bool>("Actually Faster", "Cauldron brrrrrt", true, "Should the cauldrons go brrrrrt?");
+            cleansingPool = base.Config.Bind<bool>("Actually Faster", "Cleansing Pool brrrrrt", true, "Should the cleansing pool go brrrrrt?");
+            chestDrop = base.Config.Bind<bool>("Actually Faster", "Chest drop brrrrrt", true, "Should the chests go brrrrrt?");
             if (scrapper.Value)
             {
                 On.RoR2.Stage.Start += delegate (On.RoR2.Stage.orig_Start orig, Stage self)
@@ -75,11 +79,24 @@ namespace ActuallyFaster
                     orig(self);
                 };
             }
-            if (chanceShrine.Value || cauldron.Value)
+            if (chestDrop.Value)
+            {
+                On.RoR2.ChestBehavior.ItemDrop += (orig, self) =>
+                {
+                    self.SetFieldValue("dropUpVelocityStrength", 0.0f);
+                    self.SetFieldValue("dropForwardVelocityStrength", 10.0f);
+                    orig(self);
+                };
+            }
+            if (chanceShrine.Value || cauldron.Value || cleansingPool.Value)
             {
                 On.RoR2.PurchaseInteraction.OnInteractionBegin += (orig, self, activator) =>
                 {
                     orig(self, activator);
+                    if(self == null)
+                    {
+                        return;
+                    }
                     if (chanceShrine.Value)
                     {
                         ShrineChanceBehavior behavior = self.GetComponent<ShrineChanceBehavior>();
@@ -90,6 +107,11 @@ namespace ActuallyFaster
                     }
     
                     if ((self.costType == CostTypeIndex.WhiteItem || self.costType == CostTypeIndex.GreenItem || self.costType == CostTypeIndex.RedItem) && cauldron.Value && (self.Networkcost > 0) && !self.isShrine)
+                    {
+                        self.available = true;
+                    }
+
+                    if (self.costType == CostTypeIndex.LunarItemOrEquipment && self.Networkcost > 0 && cleansingPool.Value)
                     {
                         self.available = true;
                     }
