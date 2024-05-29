@@ -1,6 +1,6 @@
 ﻿using BepInEx.Logging;
 
-namespace ExamplePlugin
+namespace ActuallyFaster
 {
     internal static class Log
     {
