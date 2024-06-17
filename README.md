@@ -11,4 +11,6 @@ Actually Faster is a mod that makes the printer, scrapper, chance shrine and cau
 
 - v1.0.8: add faster cleansing pool and "faster" chests
 
+- v1.0.9: remove R2API dependency entirely. Credits go to kpzip!
+
 For a short Showcase click [here](https://youtu.be/vuJa0uxHccQ).
